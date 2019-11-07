@@ -4,7 +4,6 @@ const ui = new UI();
 // Init LocalStorage Object
 const storage = new LS();
 
-
 // Get Stored Location Data
 const weatherLocation = storage.getLocation();
 
@@ -12,7 +11,7 @@ const weatherLocation = storage.getLocation();
 const weather = new Weather(weatherLocation.city, weatherLocation.country, weatherLocation.unit);
 
 // Get Weather on DOM Load
-document.addEventListener('DOMContentLoaded', getWeather(weatherLocation.unit));
+document.addEventListener('DOMContentLoaded', getWeather(weatherLocation.city, weatherLocation.country, weatherLocation.unit));
 
 // Change Location Event
 document.getElementById('w-change-btn').addEventListener('click', (e) => {
@@ -32,12 +31,7 @@ document.getElementById('w-change-btn').addEventListener('click', (e) => {
         weather.changeLocation(city, country, unit);
 
         // Get Weather
-        if(getWeather(unit)){
-        // Save Location Data in LocalStorage
-        storage.setLocation(city, country, unit);
-        }else{
-            console.log('')
-        }
+        getWeather(city, country, unit);
 
         // Clear Inputs
         document.getElementById('city').value = '';
@@ -57,16 +51,17 @@ document.getElementById('w-change-btn').addEventListener('click', (e) => {
 });
 
 // Get Weather
-function getWeather(unit){
+function getWeather(city, country, unit){
     weather.getWeather()
         .then(results => {
             // Show UI
             ui.paint(results, unit);
-            return true;
+
+            // Save Location Data in LocalStorage
+            storage.setLocation(city, country, unit); 
         })
         .catch(err => {
             // Show Error Message
             ui.showAlert(err.message, 'alert alert-danger');
-            return false;
         });
 }
