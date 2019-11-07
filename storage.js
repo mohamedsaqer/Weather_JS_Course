@@ -1,4 +1,4 @@
-class Storage{
+class LS{
     constructor(){
         this.city;
         this.country;
