@@ -1,17 +1,14 @@
 class Weather{
-    constructor(city, country){
+    constructor(city, country, unit){
         this.apiKey = '1a03b8d2530728b02e7dab283b20c3da';
         this.city = city;
         this.country = country;
+        this.unit = unit;
     }
 
     // Fetch Weather API
     async getWeather(){
-        const proxyurl = "https://cors-anywhere.herokuapp.com/";
-
-        const url = `https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&appid=${this.apiKey}`;
-
-        const response = await fetch(proxyurl + url);
+        const response = await fetch(`https://api.openweathermap.org/data/2.5/weather?q=${this.city},${this.country}&units=${this.unit}&appid=${this.apiKey}`);
 
         const responseData = await response.json();
 
@@ -19,8 +16,9 @@ class Weather{
     }
 
     // Change Location
-    changeLocation(city, country){
+    changeLocation(city, country, unit){
         this.city = city;
         this.country = country;
+        this.unit = unit;
     }
 }
